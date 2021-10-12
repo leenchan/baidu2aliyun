@@ -54,7 +54,16 @@ run_cloud() {
 copy_files() {
   echo "From Baiduyun: $FROM_BAIDUYUN_PATH"
   echo "To Aliyun: $TO_ALIYUN_DIR"
-  ${BIN_BAIDUYUN} ls "$FROM_BAIDUYUN_PATH" | grep -E '^\s*[0-9]+' | sed -E 's/^\s*//;s/\s{3,16}/  /g' | awk -F'  ' '{print $4}'
+  LIST=$(${BIN_BAIDUYUN} ls "$FROM_BAIDUYUN_PATH" | grep -E '^\s*[0-9]+' | sed -E 's/^\s*//;s/\s{3,16}/  /g' | awk -F'  ' '{print $4}')
+  if [ -z "$FILES" ]; then
+    TYPE="FILE"
+    LIST="$FROM_BAIDUYUN_PATH"
+  else
+    TYPE="DIRECTORY"
+    LIST=$(echo "$LIST" | sed -E "s!(.*)/${FROM_BAIDUYUN_PATH}!1!g")
+  fi
+  echo "TYPE: $TYPE"
+  echo "$LIST"
   return 0
 }
 
