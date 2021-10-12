@@ -55,7 +55,11 @@ copy_files() {
   echo "From Baiduyun: $FROM_BAIDUYUN_PATH"
   echo "To Aliyun: $TO_ALIYUN_DIR"
   LIST=$(${BIN_BAIDUYUN} ls "$FROM_BAIDUYUN_PATH" | grep -E '^\s*[0-9]+' | sed -E 's/^\s*//;s/\s{3,16}/  /g' | awk -F'  ' '{print $4}')
-  if [ -z "$FILES" ]; then
+  if [ -z "$LIST" ]; then
+    ${BIN_BAIDUYUN} meta "$FROM_BAIDUYUN_PATH" | grep -q 'md5' || {
+      echo "[ERR] Not found: \"${FROM_BAIDUYUN_PATH}\""
+      return 1
+    }
     TYPE="FILE"
     LIST="$FROM_BAIDUYUN_PATH"
   else
