@@ -32,6 +32,6 @@ jobs:
       run: |
         sh run.sh prepare
 
-    - name: Start Baidu / Ali Cloud
+    - name: Start Baiduyun / Aliyun
       run: |
         sh run.sh run_cloud
