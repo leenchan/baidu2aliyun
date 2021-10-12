@@ -26,8 +26,8 @@ install_required_packages() {
 }
 
 run_cloud() {
-  nohup $BIN_ALIYUN --port $ALIYUN_WEBDAV_PORT --refresh-token $ALIYUN_REFRESH_TOKEN --auto-index &
-  sleep 3
+  $BIN_ALIYUN --port $ALIYUN_WEBDAV_PORT --refresh-token $ALIYUN_REFRESH_TOKEN --auto-index &
+  sleep 5
   curl -sI 127.0.0.1:$ALIYUN_WEBDAV_PORT | grep -q "200" || echo "[ERR] Failed to run Aliyun."
   mkdir -p $ALIYUN_MNT
   sudo mount -t davfs -o user_id=1001,group_id=121,rw 127.0.0.1:$ALIYUN_WEBDAV_PORT $ALIYUN_MNT || "[ERR] Failet to mount Aliyun."
