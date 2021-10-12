@@ -27,7 +27,7 @@ install_required_packages() {
 }
 
 run_cloud() {
-  nohup $BIN_ALIYUN --port $ALIYUN_WEBDAV_PORT --refresh-token $ALIYUN_REFRESH_TOKEN --auto-index &
+  tmux new-session -d -s aliyun_webdav "$BIN_ALIYUN --port $ALIYUN_WEBDAV_PORT --refresh-token $ALIYUN_REFRESH_TOKEN --auto-index"
   RETRY="0"
   ALIYUN_OK="0"
   while true
@@ -69,6 +69,14 @@ copy_files() {
   echo "TYPE: $TYPE"
   echo "$LIST"
   return 0
+}
+
+dispatch() {
+  curl \
+    -X POST https://api.github.com/repos/${{ github.repository }}/dispatches \
+    -H "Accept: application/vnd.github.everest-preview+json" \
+    -H "Authorization: token ${{ secrets.REPO_TOKEN }}" \
+    -d "{\"event_type\": \"continue\", \"client_payload\": {\"baiduyun\": \"$FROM_BAIDUYUN_PATH\", \"aliyun\": \"$TO_ALIYUN_DIR\"}}"
 }
 
 case "$1" in
