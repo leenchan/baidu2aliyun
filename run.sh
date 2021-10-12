@@ -27,7 +27,7 @@ install_required_packages() {
 }
 
 run_cloud() {
-  $BIN_ALIYUN --port $ALIYUN_WEBDAV_PORT --refresh-token $ALIYUN_REFRESH_TOKEN --auto-index 2>/dev/null &
+  nohup $BIN_ALIYUN --port $ALIYUN_WEBDAV_PORT --refresh-token $ALIYUN_REFRESH_TOKEN --auto-index &
   RETRY="0"
   ALIYUN_OK="0"
   while true

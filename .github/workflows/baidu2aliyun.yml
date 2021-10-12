@@ -1,4 +1,4 @@
-name: Copy files from BaiduYun to Aliyun
+name: Baiduyun => Aliyun q(^.^)p
 
 on:
   repository_dispatch:
