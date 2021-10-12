@@ -7,8 +7,9 @@ ALIYUN_REFRESH_TOKEN="$REFRESH_TOKEN"
 ALIYUN_MNT="$CUR_DIR/aliyun"
 
 pre_check() {
-  [ -z "$FROM_BAIDUYUN_PATH" ] && echo "Please choose a file / dir from BaiduYun"
-  [ -z "$REFRESH_TOKEN" ] && echo "Please set Aliyun Token"
+  [ -z "$FROM_BAIDUYUN_PATH" ] && echo "Please choose a file / dir from BaiduYun" && return 1
+  [ -z "$REFRESH_TOKEN" ] && echo "Please set Aliyun Token" && return 1
+  return 0
 }
 
 install_required_packages() {
@@ -41,9 +42,10 @@ run_cloud() {
   return 0
 }
 
-copy_file_or_dir() {
+start_copy() {
   echo "From Baiduyun: $FROM_BAIDUYUN_PATH"
   echo "To Aliyun: $TO_ALIYUN_DIR"
+  return 0
 }
 
 case "$1" in
@@ -55,5 +57,8 @@ case "$1" in
     ;;
   "run_cloud")
     run_cloud || exit 1
+    ;;
+  "start_copy")
+    start_copy || exit 1
     ;;
 esac
