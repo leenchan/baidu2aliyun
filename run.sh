@@ -26,7 +26,7 @@ install_required_packages() {
 }
 
 run_cloud() {
-  nohub $BIN_ALIYUN --port $ALIYUN_WEBDAV_PORT --refresh-token $ALIYUN_REFRESH_TOKEN --auto-index &
+  nohup $BIN_ALIYUN --port $ALIYUN_WEBDAV_PORT --refresh-token $ALIYUN_REFRESH_TOKEN --auto-index &
   sleep 3
   curl -sI 127.0.0.1:$ALIYUN_WEBDAV_PORT | grep -q "200" || echo "[ERR] Failed to run Aliyun."
   mkdir -p $ALIYUN_MNT
