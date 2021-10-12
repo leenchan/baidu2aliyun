@@ -32,6 +32,10 @@ jobs:
       run: |
         sh run.sh prepare
 
-    - name: Start Baiduyun / Aliyun
+    - name: Run Baiduyun / Aliyun Service
       run: |
         sh run.sh run_cloud
+
+    - name: Copy files / dir
+      run: |
+        sh run.sh copy_files

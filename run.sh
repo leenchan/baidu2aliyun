@@ -51,9 +51,10 @@ run_cloud() {
   return 0
 }
 
-start_copy() {
+copy_files() {
   echo "From Baiduyun: $FROM_BAIDUYUN_PATH"
   echo "To Aliyun: $TO_ALIYUN_DIR"
+  ${BIN_BAIDUYUN} ls "$FROM_BAIDUYUN_PATH" | grep -E '^\s*[0-9]+' | sed -E 's/^\s*//;s/\s{3,16}/  /g' | awk -F'  ' '{print $4}'
   return 0
 }
 
@@ -67,7 +68,7 @@ case "$1" in
   "run_cloud")
     run_cloud || exit 1
     ;;
-  "start_copy")
-    start_copy || exit 1
+  "copy_files")
+    copy_files || exit 1
     ;;
 esac
