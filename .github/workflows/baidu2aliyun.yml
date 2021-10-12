@@ -16,12 +16,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    env:
-      FROM_BAIDUYUN_PATH: ${{ github.event.inputs.FROM_BAIDUYUN_PATH }}
-      TO_ALIYUN_DIR: ${{ github.event.inputs.TO_ALIYUN_DIR }}
     - name: Checkout
       uses: actions/checkout@main
 
     - name: Start
+      env:
+        FROM_BAIDUYUN_PATH: ${{ github.event.inputs.FROM_BAIDUYUN_PATH }}
+        TO_ALIYUN_DIR: ${{ github.event.inputs.TO_ALIYUN_DIR }}
       run: |
         sh run.sh
