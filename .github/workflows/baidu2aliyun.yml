@@ -9,19 +9,29 @@ on:
         default: ''
       TO_ALIYUN_DIR:
         description: 'Aliyun File / Dir (Full Path)'
-        default: ''
+        default: '/Baiduyun'
+
+env:
+  REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+  FROM_BAIDUYUN_PATH: ${{ github.event.inputs.FROM_BAIDUYUN_PATH }}
+  TO_ALIYUN_DIR: ${{ github.event.inputs.TO_ALIYUN_DIR }}
 
 jobs:
-  build:
+  Copy files:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout
       uses: actions/checkout@main
 
-    - name: Start
-      env:
-        FROM_BAIDUYUN_PATH: ${{ github.event.inputs.FROM_BAIDUYUN_PATH }}
-        TO_ALIYUN_DIR: ${{ github.event.inputs.TO_ALIYUN_DIR }}
+    - name: Precheck
       run: |
-        sh run.sh
+        sh run.sh precheck
+
+    - name: Prepare
+      run: |
+        sh run.sh prepare
+
+    - name: Start Baidu / Ali Cloud
+      run: |
+        sh run.sh run_cloud

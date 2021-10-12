@@ -1,0 +1,47 @@
+{
+ "baidu_active_uid": 13846087,
+ "baidu_user_list": [
+  {
+   "uid": 13846087,
+   "name": "leenchan",
+   "sex": "♂",
+   "age": 13.9,
+   "bduss": "5xb1dqfmJVVEpDZmFXNm1kRnBjUFJ1SnBWWmQ3RDNzY3YtaHlqajlneUl0OEJlSUFBQUFBJCQAAAAAAAAAAAEAAABHRtMAbGVlbmNoYW4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIgqmV6IKpleNU",
+   "ptoken": "06abef8e3cef920d50eee014d7439287",
+   "stoken": "51a8a1635007a014241e8a4c6b7e62880d3a2b6643916be315bcc25bf8ce9b65",
+   "sboxtkn": "",
+   "cookies": "",
+   "workdir": "/[PC]"
+  },
+  {
+   "uid": 5513372631,
+   "name": "leenchan3",
+   "sex": "unknown",
+   "age": 0.2,
+   "bduss": "FnbHd-anV5VGYyMUxJTW92OXFqM2pVYmVoNG1lNm90djhod3hLenFFQ3lrWXhoSVFBQUFBJCQAAAAAAQAAAAEAAADXY59IbGVlbmNoYW4zAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALIEZWGyBGVhTF",
+   "ptoken": "0e4cabd62aa7d53fdeef0b145f2def60",
+   "stoken": "24d82b0c08fd764655ff2949ef9a203dcbd55a5978d22c6a897049a2048ac3ad",
+   "sboxtkn": "",
+   "cookies": "BAIDUID=42B21277514B3815728EE505ACD09995:FG=1; BAIDUID_BFESS=42B21277514B3815728EE505ACD09995:FG=1; BAIDU_WISE_UID=wpass_1634010222219_401; logTraceID=416fab64a34227f47e13e16efe092da809d2e718e8f01b907b; BDUSS=FnbHd-anV5VGYyMUxJTW92OXFqM2pVYmVoNG1lNm90djhod3hLenFFQ3lrWXhoSVFBQUFBJCQAAAAAAQAAAAEAAADXY59IbGVlbmNoYW4zAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALIEZWGyBGVhTF; STOKEN=4b5f2ad83f31515298d686fee50c1da5336174dcb380c30b62df713f81f34479; LASTLOGINTYPE=0; PTOKEN=0e4cabd62aa7d53fdeef0b145f2def60; UBI=fi_PncwhpxZ%7ETaJc81bS2Ep3fp0IHqPQAj9kalFFENwdTUKjqWOeJy8D%7Eu%7EDaKrsjNg1xWGYfxKS-SyYWIg; BDUSS_BFESS=FnbHd-anV5VGYyMUxJTW92OXFqM2pVYmVoNG1lNm90djhod3hLenFFQ3lrWXhoSVFBQUFBJCQAAAAAAQAAAAEAAADXY59IbGVlbmNoYW4zAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALIEZWGyBGVhTF; HISTYPE=1c67c0db185d4b75bc8f2ccda343e35da572; SAVEUSERID=4c6da8a6719d6733a92246048b; HISTORY=a9ee75446b465347f27588143ee7cfce3b",
+   "workdir": "/_OSX"
+  }
+ ],
+ "appid": 266719,
+ "cache_size": 65536,
+ "max_parallel": 1,
+ "max_upload_parallel": 8,
+ "max_download_load": 1,
+ "max_upload_load": 4,
+ "max_download_rate": 0,
+ "max_upload_rate": 0,
+ "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36",
+ "pcs_ua": "",
+ "pcs_addr": "pcs.baidu.com",
+ "pan_ua": "netdisk;2.2.51.6;netdisk;10.0.63;PC;android-android",
+ "savedir": "C:\\Users\\leen\\go\\bin\\Downloads",
+ "enable_https": true,
+ "proxy": "",
+ "local_addrs": "",
+ "no_check": true,
+ "u_policy": "fail"
+}
