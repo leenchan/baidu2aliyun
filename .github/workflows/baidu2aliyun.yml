@@ -17,7 +17,7 @@ env:
   TO_ALIYUN_DIR: ${{ github.event.inputs.TO_ALIYUN_DIR }}
 
 jobs:
-  Copy files:
+  main:
     runs-on: ubuntu-latest
 
     steps:
