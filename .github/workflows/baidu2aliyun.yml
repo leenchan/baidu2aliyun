@@ -1,0 +1,27 @@
+name: Copy files from BaiduYun to Aliyun
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      FROM_BAIDUYUN_PATH:
+        description: 'Baiduyun File / Dir (Full Path)'
+        default: ''
+      TO_ALIYUN_DIR:
+        description: 'Aliyun File / Dir (Full Path)'
+        default: ''
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    env:
+      FROM_BAIDUYUN_PATH: ${{ github.event.inputs.FROM_BAIDUYUN_PATH }}
+      TO_ALIYUN_DIR: ${{ github.event.inputs.TO_ALIYUN_DIR }}
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: Start
+      run: |
+        sh run.sh
