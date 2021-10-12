@@ -27,11 +27,20 @@ install_required_packages() {
 }
 
 run_cloud() {
-  $BIN_ALIYUN --port $ALIYUN_WEBDAV_PORT --refresh-token $ALIYUN_REFRESH_TOKEN --auto-index &
-  sleep 5
-  curl -sI 127.0.0.1:$ALIYUN_WEBDAV_PORT | grep -q "200" || (echo "[ERR] Failed to run Aliyun."; return 1)
+  $BIN_ALIYUN --port $ALIYUN_WEBDAV_PORT --refresh-token $ALIYUN_REFRESH_TOKEN --auto-index 2>/dev/null &
+  RETRY="0"
+  ALIYUN_OK="0"
+  while true
+  do
+    [ "$RETRY" -gt 10 ] && break
+    echo "Checking Aliyun ($RETRY)"
+    curl -sI 127.0.0.1:$ALIYUN_WEBDAV_PORT | grep -q "200" && ALIYUN_OK="1" && break
+    RETRY=$((RETRY+1))
+    sleep 1
+  done
+  [ "$ALIYUN_OK" = "0" ] && echo "[ERR] Failed to run Aliyun." && return 1
   mkdir -p $ALIYUN_MNT
-  sudo mount -t davfs -o user_id=1001,group_id=121,rw 127.0.0.1:$ALIYUN_WEBDAV_PORT $ALIYUN_MNT || ("[ERR] Failet to mount Aliyun."; return 1)
+  sudo mount -t davfs -o uid=1001,gid=121,rw 127.0.0.1:$ALIYUN_WEBDAV_PORT $ALIYUN_MNT || ("[ERR] Failet to mount Aliyun."; return 1)
   [ -z "$(ls $ALIYUN_MNT)" ] && return 1
   mkdir -p ~/.config/BaiduPCS-Go
   cp config/pcs_config.json ~/.config/BaiduPCS-Go/
