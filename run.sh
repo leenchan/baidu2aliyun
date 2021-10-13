@@ -26,6 +26,8 @@ install_required_packages() {
 	cat <<-EOF >/tmp/davfs2.conf
 	if_match_bug    1
 	use_locks       0
+	cache_size      0
+	delay_upload    0
 	EOF
 	sudo mv /tmp/davfs2.conf /etc/davfs2/davfs2.conf
 	# Install aliyundrive-webdav
