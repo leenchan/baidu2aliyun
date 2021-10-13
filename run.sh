@@ -45,10 +45,11 @@ run_cloud() {
 	done
 	[ "$ALIYUN_OK" = "0" ] && echo "[ERR] Failed to run Aliyun." && return 1
 	sudo mv /etc/davfs2/davfs2.conf /etc/davfs2/davfs2.conf.bak
-	sudo cat <<-EOF > "/etc/davfs2/davfs2.conf"
+	cat <<-EOF >/tmp/davfs2.conf
 	if_match_bug    1
 	use_locks       0
 	EOF
+	sudo mv /tmp/davfs2.conf /etc/davfs2/davfs2.conf
 	mkdir -p $ALIYUN_MNT
 	echo "$(id | grep -Eo '(uid|gid)=[0-9]+' | tr '\n' ',')file_mode=666,dir_mode=777"
 	echo "" | awk '{print "";print ""}' | sudo mount -t davfs -o "$(id | grep -Eo '(uid|gid)=[0-9]+' | tr '\n' ',')file_mode=666,dir_mode=777" "127.0.0.1:$ALIYUN_WEBDAV_PORT" "$ALIYUN_MNT"
