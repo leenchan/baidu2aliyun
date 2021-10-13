@@ -12,11 +12,12 @@ on:
         default: '/Baiduyun'
 
 env:
+  GITHUB_REPO: ${{ github.repository }}
   REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
   FROM_BAIDUYUN_PATH: ${{ github.event.inputs.FROM_BAIDUYUN_PATH }}
   TO_ALIYUN_DIR: ${{ github.event.inputs.TO_ALIYUN_DIR }}
-  FROM_BAIDUYUN_PATH_LAST: ${{ github.event.client_payload.target }}
-  TO_ALIYUN_DIR_LAST: ${{ github.event.client_payload.target }}
+  FROM_BAIDUYUN_PATH_LAST: ${{ github.event.client_payload.from_baiduyun }}
+  TO_ALIYUN_DIR_LAST: ${{ github.event.client_payload.to_aliyun }}
 
 jobs:
   main:

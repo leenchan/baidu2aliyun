@@ -19,8 +19,8 @@ pre_check() {
 
 install_required_packages() {
 	sudo apt-get update && sudo apt-get install davfs2 inotify-tools
-	echo "if_match_bug    1" >> /etc/davfs2/davfs2.conf
-	echo "use_locks       0" >> /etc/davfs2/davfs2.conf
+	sudo echo "if_match_bug    1" >> /etc/davfs2/davfs2.conf
+	sudo echo "use_locks       0" >> /etc/davfs2/davfs2.conf
 	pip install aliyundrive-webdav
 	git clone https://github.com/qjfoidnh/BaiduPCS-Go.git baidupcs && \
 		cd baidupcs && \
@@ -134,7 +134,7 @@ dispatch() {
 		-X POST https://api.github.com/repos/${GITHUB_REPO}/dispatches \
 		-H "Accept: application/vnd.github.everest-preview+json" \
 		-H "Authorization: token ${{ secrets.REPO_TOKEN }}" \
-		-d "{\"event_type\": \"continue\", \"client_payload\": {\"baiduyun\": \"$FROM_BAIDUYUN_PATH\", \"aliyun\": \"$TO_ALIYUN_DIR\"}}"
+		-d "{\"event_type\": \"continue\", \"client_payload\": {\"from_baiduyun\": \"$FROM_BAIDUYUN_PATH\", \"to_aliyun\": \"$TO_ALIYUN_DIR\"}}"
 }
 
 case "$1" in
