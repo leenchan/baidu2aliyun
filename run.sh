@@ -4,6 +4,7 @@ BIN_ALIYUN="aliyundrive-webdav"
 BIN_BAIDUYUN="baidupcs"
 BAIDUYUN_DOWNLOAD_DIR="$CUR_DIR/baiduyun_dl"
 BAIDUYUN_CACHE_DIR="$BAIDUYUN_DOWNLOAD_DIR/.cache"
+BAIDUYUN_DOWNLOAD_EXT=".BaiduPCS-Go-downloading"
 ALIYUN_WEBDAV_PORT="8080"
 ALIYUN_REFRESH_TOKEN="$REFRESH_TOKEN"
 ALIYUN_MNT="$CUR_DIR/aliyun"
@@ -104,9 +105,20 @@ transfer_files() {
 					[ -d "$_TARGET_PATH_" ] || mkdir -p "$_TARGET_PATH_"
 				else
 					_CURR_=$((_CURR_+1))
-					echo "[${_CURR_}/${_TOTAL_}] $_SROUCE_PATH_ => $_TARGET_PATH_"
-					${BIN_BAIDUYUN} download "$FROM_BAIDUYUN_PATH/$LINE" --saveto "$(echo "$_SROUCE_PATH_" | grep -Eo '.*\/')" && {
-						cp "$_SROUCE_PATH_" "$_TARGET_PATH_"
+					_SKIP_="0"
+					[ -f "$_TARGET_PATH_" ] && {
+						if [ -f "${_TARGET_PATH_}${BAIDUYUN_DOWNLOAD_EXT}" ]; then
+							cp -f "$_TARGET_PATH_" "$_SROUCE_PATH_"
+							cp -f "${_TARGET_PATH_}${BAIDUYUN_DOWNLOAD_EXT}" "${_SROUCE_PATH_}${BAIDUYUN_DOWNLOAD_EXT}"
+						else
+							_SKIP_="1"
+						fi
+					} _SKIP_="1"
+					echo "[${_CURR_}/${_TOTAL_}] $_SROUCE_PATH_ => $_TARGET_PATH_$([ "${_SKIP_}" = "1" ] && echo " ...Skip")"
+					[ "$_SKIP_" = "1" ] || {
+						${BIN_BAIDUYUN} download "$FROM_BAIDUYUN_PATH/$LINE" --saveto "$(echo "$_SROUCE_PATH_" | grep -Eo '.*\/')" && {
+							cp -f "$_SROUCE_PATH_" "$_TARGET_PATH_"
+						}
 					}
 				fi
 			}
