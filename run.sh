@@ -49,7 +49,8 @@ run_cloud() {
 	mkdir -p $ALIYUN_MNT
 	echo "$(id | grep -Eo '(uid|gid)=[0-9]+' | tr '\n' ',')file_mode=666,dir_mode=777"
 	echo "" | awk '{print "";print ""}' | sudo mount -t davfs -o "$(id | grep -Eo '(uid|gid)=[0-9]+' | tr '\n' ',')file_mode=666,dir_mode=777" "127.0.0.1:$ALIYUN_WEBDAV_PORT" "$ALIYUN_MNT"
-	mount
+	sudo cat /etc/davfs2/davfs2.conf
+	sudo mount
 	exit 1
 	[ -z "$(ls $ALIYUN_MNT)" ] && echo "[ERR] Failet to mount Aliyun." && return 1
 	mkdir -p ~/.config/BaiduPCS-Go
