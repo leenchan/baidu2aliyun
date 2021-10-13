@@ -1,4 +1,4 @@
-name: test
+name: Test
 
 on:
   repository_dispatch:
@@ -27,9 +27,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@main
 
-    - name: Precheck
-      run: |
-        sh run.sh precheck
+    # - name: Precheck
+    #   run: |
+    #     sh run.sh precheck
 
     - name: Prepare
       run: |
