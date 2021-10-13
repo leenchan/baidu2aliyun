@@ -47,7 +47,10 @@ run_cloud() {
 	done
 	[ "$ALIYUN_OK" = "0" ] && echo "[ERR] Failed to run Aliyun." && return 1
 	mkdir -p $ALIYUN_MNT
-	echo "" | awk '{print "";print ""}' | sudo mount -t davfs -o $(id | grep -Eo '(uid|gid)=[0-9]+' | tr '\n' ',')file_mode=666,dir_mode=777 "127.0.0.1:$ALIYUN_WEBDAV_PORT" "$ALIYUN_MNT"
+	echo "$(id | grep -Eo '(uid|gid)=[0-9]+' | tr '\n' ',')file_mode=666,dir_mode=777"
+	echo "" | awk '{print "";print ""}' | sudo mount -t davfs -o "$(id | grep -Eo '(uid|gid)=[0-9]+' | tr '\n' ',')file_mode=666,dir_mode=777" "127.0.0.1:$ALIYUN_WEBDAV_PORT" "$ALIYUN_MNT"
+	mount
+	exit 1
 	[ -z "$(ls $ALIYUN_MNT)" ] && echo "[ERR] Failet to mount Aliyun." && return 1
 	mkdir -p ~/.config/BaiduPCS-Go
 	cp config/pcs_config.json ~/.config/BaiduPCS-Go/
