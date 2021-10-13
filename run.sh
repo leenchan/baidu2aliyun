@@ -2,6 +2,8 @@
 CUR_DIR=$(cd "$(dirname "$0")";pwd)
 BIN_ALIYUN="aliyundrive-webdav"
 BIN_BAIDUYUN="baidupcs"
+BAIDUYUN_DOWNLOAD_DIR="$CUR_DIR/baiduyun_dl"
+BAIDUYUN_CACHE_DIR="$BAIDUYUN_DOWNLOAD_DIR/.cache"
 ALIYUN_WEBDAV_PORT="8080"
 ALIYUN_REFRESH_TOKEN="$REFRESH_TOKEN"
 ALIYUN_MNT="$CUR_DIR/aliyun"
@@ -51,6 +53,24 @@ run_cloud() {
   return 0
 }
 
+get_baiduyun_list() {
+  [ -z "$1" ] && return 1
+  _LIST_=$(${BIN_BAIDUYUN} tree "$1")
+  echo "$_LIST_" | awk -F'   ' '{
+    for (i=1;i<=NF;i++) {
+      gsub("├── ", "", $i);
+      gsub("└── ", "", $i);
+      if ($i~/\/$/) {
+        DIR = i==1 ? $i : DIR $i;
+      }
+      if (i==NF) {
+        print $i~/\/$/ ? DIR : DIR $i;
+      }
+  	}
+  }'
+  return 1
+}
+
 copy_files() {
   echo "From Baiduyun: $FROM_BAIDUYUN_PATH"
   echo "To Aliyun: $TO_ALIYUN_DIR"
@@ -63,8 +83,9 @@ copy_files() {
     TYPE="FILE"
     LIST="$FROM_BAIDUYUN_PATH"
   else
-    TYPE="DIRECTORY"
-    LIST=$(echo "$LIST" | sed -E "s!(.*)/${FROM_BAIDUYUN_PATH}!1!g")
+    mkdir -p "$BAIDUYUN_CACHE_DIR"
+    get_baiduyun_list "$FROM_BAIDUYUN_PATH" > "$BAIDUYUN_CACHE_DIR/baiduyun_list"
+    cat "$BAIDUYUN_CACHE_DIR/baiduyun_list"
   fi
   echo "TYPE: $TYPE"
   echo "$LIST"
