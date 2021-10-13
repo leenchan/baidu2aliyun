@@ -85,10 +85,11 @@ transfer_files() {
 	else
 		TYPE="DIRECTORY"
 		mkdir -p "$BAIDUYUN_CACHE_DIR"
+		FROM_BAIDUYUN_PATH=$(echo "$FROM_BAIDUYUN_PATH" | sed 's/\/$//')
 		get_baiduyun_list "$FROM_BAIDUYUN_PATH" > "$BAIDUYUN_CACHE_DIR/baiduyun_list"
 		cp "$BAIDUYUN_CACHE_DIR/baiduyun_list" "$BAIDUYUN_CACHE_DIR/baiduyun_process"
-		TOTAL_FILES=$(cat "$BAIDUYUN_CACHE_DIR/baiduyun_list" | grep -v '/$' | wc -l)
-		CURR=0
+		_TOTAL_=$(cat "$BAIDUYUN_CACHE_DIR/baiduyun_list" | grep -v '/$' | wc -l)
+		_CURR_=0
 		while read LINE
 		do
 			[ -z "$LINE" ] || {
@@ -96,8 +97,8 @@ transfer_files() {
 					[ -d "$BAIDUYUN_DOWNLOAD_DIR/$LINE" ] || mkdir -p "$BAIDUYUN_DOWNLOAD_DIR/$LINE"
 					[ -d "$TO_ALIYUN_DIR/$LINE" ] || mkdir -p "$TO_ALIYUN_DIR/$LINE"
 				else
-					CURR=$((CURR+1))
-					echo "[${CURR}/${TOTAL_FILES}] $FROM_BAIDUYUN_PATH/$LINE => $TO_ALIYUN_DIR/$LINE"
+					_CURR_=$((_CURR_+1))
+					echo "[${_CURR_}/${_TOTAL_}] $FROM_BAIDUYUN_PATH/$LINE => $TO_ALIYUN_DIR/$LINE"
 					${BIN_BAIDUYUN} download "$FROM_BAIDUYUN_PATH/$LINE" --saveto "$BAIDUYUN_DOWNLOAD_DIR/$(echo "$LINE" | grep -Eo '.*\/')" && {
 						cp "$BAIDUYUN_DOWNLOAD_DIR/$LINE" "$TO_ALIYUN_DIR/$LINE"
 					}
