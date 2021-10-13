@@ -8,12 +8,13 @@ BAIDUYUN_DOWNLOAD_EXT=".BaiduPCS-Go-downloading"
 ALIYUN_WEBDAV_PORT="8080"
 ALIYUN_REFRESH_TOKEN="$REFRESH_TOKEN"
 ALIYUN_MNT="$CUR_DIR/aliyun"
+TO_ALIYUN_DIR="${TO_ALIYUN_DIR:-/Baiduyun}"
+echo "$TO_ALIYUN_DIR" | grep -q '^/' || TO_ALIYUN_DIR="/${TO_ALIYUN_DIR}"
 
 pre_check() {
 	[ -z "$FROM_BAIDUYUN_PATH" ] && echo "Please choose a file / dir from BaiduYun" && return 1
 	[ -z "$REFRESH_TOKEN" ] && echo "Please set Aliyun Token" && return 1
-	[ -z "$TO_ALIYUN_DIR" ] && TO_ALIYUN_DIR="/Baiduyun"
-	echo "$TO_ALIYUN_DIR" | grep -q '^/' || TO_ALIYUN_DIR="/${TO_ALIYUN_DIR}"
+
 	return 0
 }
 

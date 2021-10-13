@@ -1,0 +1,47 @@
+name: test
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      FROM_BAIDUYUN_PATH:
+        description: 'Baiduyun File / Dir (Full Path)'
+        default: ''
+      TO_ALIYUN_DIR:
+        description: 'Aliyun File / Dir (Full Path)'
+        default: '/Baiduyun'
+
+env:
+  GITHUB_REPO: ${{ github.repository }}
+  REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+  FROM_BAIDUYUN_PATH: ${{ github.event.inputs.FROM_BAIDUYUN_PATH }}
+  TO_ALIYUN_DIR: ${{ github.event.inputs.TO_ALIYUN_DIR }}
+  FROM_BAIDUYUN_PATH_LAST: ${{ github.event.client_payload.from_baiduyun }}
+  TO_ALIYUN_DIR_LAST: ${{ github.event.client_payload.to_aliyun }}
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: Precheck
+      run: |
+        sh run.sh precheck
+
+    - name: Prepare
+      run: |
+        sh run.sh prepare
+
+    - name: Run Baiduyun / Aliyun Service
+      run: |
+        sh run.sh run_cloud
+
+    - name: SSH Connection to Actions
+      uses: P3TERX/ssh2actions@v1.0.0
+    
+    - name: Wait
+      run:
+        sleep $((3600*12))
