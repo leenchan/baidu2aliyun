@@ -11,6 +11,8 @@ ALIYUN_MNT="$CUR_DIR/aliyun"
 pre_check() {
 	[ -z "$FROM_BAIDUYUN_PATH" ] && echo "Please choose a file / dir from BaiduYun" && return 1
 	[ -z "$REFRESH_TOKEN" ] && echo "Please set Aliyun Token" && return 1
+	[ -z "$TO_ALIYUN_DIR" ] && TO_ALIYUN_DIR="/Baiduyun"
+	echo "$TO_ALIYUN_DIR" | grep -q '^/' || TO_ALIYUN_DIR="/${TO_ALIYUN_DIR}"
 	return 0
 }
 
@@ -93,14 +95,16 @@ transfer_files() {
 		while read LINE
 		do
 			[ -z "$LINE" ] || {
+				_SROUCE_PATH_="$BAIDUYUN_DOWNLOAD_DIR/$LINE"
+				_TARGET_PATH_="$ALIYUN_MNT$TO_ALIYUN_DIR/$LINE"
 				if echo "$LINE" | grep -q '/$'; then
-					[ -d "$BAIDUYUN_DOWNLOAD_DIR/$LINE" ] || mkdir -p "$BAIDUYUN_DOWNLOAD_DIR/$LINE"
-					[ -d "$TO_ALIYUN_DIR/$LINE" ] || mkdir -p "$TO_ALIYUN_DIR/$LINE"
+					[ -d "$_SROUCE_PATH_" ] || mkdir -p "$_SROUCE_PATH_"
+					[ -d "$_TARGET_PATH_" ] || mkdir -p "$_TARGET_PATH_"
 				else
 					_CURR_=$((_CURR_+1))
-					echo "[${_CURR_}/${_TOTAL_}] $FROM_BAIDUYUN_PATH/$LINE => $TO_ALIYUN_DIR/$LINE"
-					${BIN_BAIDUYUN} download "$FROM_BAIDUYUN_PATH/$LINE" --saveto "$BAIDUYUN_DOWNLOAD_DIR/$(echo "$LINE" | grep -Eo '.*\/')" && {
-						cp "$BAIDUYUN_DOWNLOAD_DIR/$LINE" "$TO_ALIYUN_DIR/$LINE"
+					echo "[${_CURR_}/${_TOTAL_}] $_SROUCE_PATH_ => $_TARGET_PATH_"
+					${BIN_BAIDUYUN} download "$FROM_BAIDUYUN_PATH/$LINE" --saveto "$(echo "$_SROUCE_PATH_" | grep -Eo '.*\/')" && {
+						cp "$_SROUCE_PATH_" "$_TARGET_PATH_"
 					}
 				fi
 			}
