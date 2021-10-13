@@ -18,8 +18,18 @@ pre_check() {
 }
 
 install_required_packages() {
+	# Install Packages
 	sudo apt-get update && sudo apt-get install davfs2 inotify-tools
+	# Config Davfs
+	sudo mv /etc/davfs2/davfs2.conf /etc/davfs2/davfs2.conf.bak
+	cat <<-EOF >/tmp/davfs2.conf
+	if_match_bug    1
+	use_locks       0
+	EOF
+	sudo mv /tmp/davfs2.conf /etc/davfs2/davfs2.conf
+	# Install aliyundrive-webdav
 	pip install aliyundrive-webdav
+	# Install BaiduPCS-Go
 	git clone https://github.com/qjfoidnh/BaiduPCS-Go.git baidupcs && \
 		cd baidupcs && \
 		go build && \
@@ -44,18 +54,9 @@ run_cloud() {
 		sleep 1
 	done
 	[ "$ALIYUN_OK" = "0" ] && echo "[ERR] Failed to run Aliyun." && return 1
-	sudo mv /etc/davfs2/davfs2.conf /etc/davfs2/davfs2.conf.bak
-	cat <<-EOF >/tmp/davfs2.conf
-	if_match_bug    1
-	use_locks       0
-	EOF
-	sudo mv /tmp/davfs2.conf /etc/davfs2/davfs2.conf
 	mkdir -p $ALIYUN_MNT
 	echo "$(id | grep -Eo '(uid|gid)=[0-9]+' | tr '\n' ',')file_mode=666,dir_mode=777"
 	echo "" | awk '{print "";print ""}' | sudo mount -t davfs -o "$(id | grep -Eo '(uid|gid)=[0-9]+' | tr '\n' ',')file_mode=666,dir_mode=777" "127.0.0.1:$ALIYUN_WEBDAV_PORT" "$ALIYUN_MNT"
-	sudo cat /etc/davfs2/davfs2.conf
-	sudo mount
-	exit 1
 	[ -z "$(ls $ALIYUN_MNT)" ] && echo "[ERR] Failet to mount Aliyun." && return 1
 	mkdir -p ~/.config/BaiduPCS-Go
 	cp config/pcs_config.json ~/.config/BaiduPCS-Go/
