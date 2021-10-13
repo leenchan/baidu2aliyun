@@ -15,6 +15,8 @@ env:
   REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
   FROM_BAIDUYUN_PATH: ${{ github.event.inputs.FROM_BAIDUYUN_PATH }}
   TO_ALIYUN_DIR: ${{ github.event.inputs.TO_ALIYUN_DIR }}
+  FROM_BAIDUYUN_PATH_LAST: ${{ github.event.client_payload.target }}
+  TO_ALIYUN_DIR_LAST: ${{ github.event.client_payload.target }}
 
 jobs:
   main:
@@ -36,6 +38,6 @@ jobs:
       run: |
         sh run.sh run_cloud
 
-    - name: Copy files / dir
+    - name: Transfer files
       run: |
-        sh run.sh copy_files
+        sh run.sh transfer
