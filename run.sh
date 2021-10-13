@@ -113,7 +113,7 @@ transfer_files() {
 						else
 							_SKIP_="1"
 						fi
-					} _SKIP_="1"
+					}
 					echo "[${_CURR_}/${_TOTAL_}] $_SROUCE_PATH_ => $_TARGET_PATH_$([ "${_SKIP_}" = "1" ] && echo " ...Skip")"
 					[ "$_SKIP_" = "1" ] || {
 						${BIN_BAIDUYUN} download "$FROM_BAIDUYUN_PATH/$LINE" --saveto "$(echo "$_SROUCE_PATH_" | grep -Eo '.*\/')" && {
