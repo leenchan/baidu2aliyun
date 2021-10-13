@@ -18,6 +18,8 @@ pre_check() {
 
 install_required_packages() {
 	sudo apt-get update && sudo apt-get install davfs2 inotify-tools
+	echo "if_match_bug    1" >> /etc/davfs2/davfs2.conf
+	echo "use_locks       0" >> /etc/davfs2/davfs2.conf
 	pip install aliyundrive-webdav
 	git clone https://github.com/qjfoidnh/BaiduPCS-Go.git baidupcs && \
 		cd baidupcs && \
