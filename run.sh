@@ -88,6 +88,25 @@ get_baiduyun_list() {
 	return 1
 }
 
+transfer_file() {
+	_CURR_=$((_CURR_+1))
+	_SKIP_="0"
+	[ -f "$_TARGET_PATH_" ] && {
+		if [ -f "${_TARGET_PATH_}${BAIDUYUN_DOWNLOAD_EXT}" ]; then
+			cp -f "$_TARGET_PATH_" "$_SROUCE_PATH_"
+			cp -f "${_TARGET_PATH_}${BAIDUYUN_DOWNLOAD_EXT}" "${_SROUCE_PATH_}${BAIDUYUN_DOWNLOAD_EXT}"
+		else
+			_SKIP_="1"
+		fi
+	}
+	echo "[${_CURR_}/${_TOTAL_}] $_SROUCE_PATH_ => $_TARGET_PATH_$([ "${_SKIP_}" = "1" ] && echo " ...Skip")"
+	[ "$_SKIP_" = "1" ] || {
+		${BIN_BAIDUYUN} download "$FROM_BAIDUYUN_PATH/$LINE" --saveto "$(echo "$_SROUCE_PATH_" | grep -Eo '.*\/')" && {
+			cp -f "$_SROUCE_PATH_" "$_TARGET_PATH_"
+		}
+	}
+}
+
 transfer_files() {
 	echo "From Baiduyun: $FROM_BAIDUYUN_PATH"
 	echo "To Aliyun: $TO_ALIYUN_DIR"
@@ -99,48 +118,50 @@ transfer_files() {
 			echo "[ERR] Not found: \"${FROM_BAIDUYUN_PATH}\""
 			return 1
 		}
-		TYPE="FILE"
-		LIST="$FROM_BAIDUYUN_PATH"
+		_TYPE_="FILE"
+		_LIST_=$(echo "$FROM_BAIDUYUN_PATH" | sed 's/^\///')
+		BAIDUYUN_WORK_DIR=""
 	else
-		TYPE="DIRECTORY"
-		mkdir -p "$BAIDUYUN_CACHE_DIR"
-		FROM_BAIDUYUN_PATH=$(echo "$FROM_BAIDUYUN_PATH" | sed 's/\/$//')
-		get_baiduyun_list "$FROM_BAIDUYUN_PATH" > "$BAIDUYUN_CACHE_DIR/baiduyun_list"
-		cp "$BAIDUYUN_CACHE_DIR/baiduyun_list" "$BAIDUYUN_CACHE_DIR/baiduyun_process"
-		_TOTAL_=$(cat "$BAIDUYUN_CACHE_DIR/baiduyun_list" | grep -v '/$' | wc -l)
-		_CURR_=0
-		while read LINE
-		do
-			[ -z "$LINE" ] || {
-				_SROUCE_PATH_="$BAIDUYUN_DOWNLOAD_DIR/$LINE"
-				_TARGET_PATH_="$ALIYUN_MNT$TO_ALIYUN_DIR/$LINE"
-				if echo "$LINE" | grep -q '/$'; then
-					[ -d "$_SROUCE_PATH_" ] || mkdir -p "$_SROUCE_PATH_"
-					[ -d "$_TARGET_PATH_" ] || mkdir -p "$_TARGET_PATH_"
-				else
-					_CURR_=$((_CURR_+1))
-					_SKIP_="0"
-					[ -f "$_TARGET_PATH_" ] && {
-						if [ -f "${_TARGET_PATH_}${BAIDUYUN_DOWNLOAD_EXT}" ]; then
-							cp -f "$_TARGET_PATH_" "$_SROUCE_PATH_"
-							cp -f "${_TARGET_PATH_}${BAIDUYUN_DOWNLOAD_EXT}" "${_SROUCE_PATH_}${BAIDUYUN_DOWNLOAD_EXT}"
-						else
-							_SKIP_="1"
-						fi
-					}
-					echo "[${_CURR_}/${_TOTAL_}] $_SROUCE_PATH_ => $_TARGET_PATH_$([ "${_SKIP_}" = "1" ] && echo " ...Skip")"
-					[ "$_SKIP_" = "1" ] || {
-						${BIN_BAIDUYUN} download "$FROM_BAIDUYUN_PATH/$LINE" --saveto "$(echo "$_SROUCE_PATH_" | grep -Eo '.*\/')" && {
-							cp -f "$_SROUCE_PATH_" "$_TARGET_PATH_"
-						}
-					}
-				fi
-			}
-		done <<-EOF
-		$(cat $BAIDUYUN_CACHE_DIR/baiduyun_process)
-		EOF
-		cat "$BAIDUYUN_CACHE_DIR/baiduyun_list"
+		_TYPE_="DIRECTORY"
+		_LIST_=$(get_baiduyun_list "$FROM_BAIDUYUN_PATH")
+		BAIDUYUN_WORK_DIR=$(echo "$FROM_BAIDUYUN_PATH" | sed 's/\/$//')
 	fi
+	mkdir -p "$BAIDUYUN_CACHE_DIR"
+	echo "$_LIST_" > "$BAIDUYUN_CACHE_DIR/baiduyun_list"
+	cp "$BAIDUYUN_CACHE_DIR/baiduyun_list" "$BAIDUYUN_CACHE_DIR/baiduyun_process"
+	_TOTAL_=$(cat "$BAIDUYUN_CACHE_DIR/baiduyun_list" | grep -v '/$' | wc -l)
+	_CURR_=0
+	while read LINE
+	do
+		[ -z "$LINE" ] || {
+			_SROUCE_PATH_="$BAIDUYUN_DOWNLOAD_DIR/$LINE"
+			_TARGET_PATH_="$ALIYUN_MNT$TO_ALIYUN_DIR/$LINE"
+			if echo "$LINE" | grep -q '/$'; then
+				[ -d "$_SROUCE_PATH_" ] || mkdir -p "$_SROUCE_PATH_"
+				[ -d "$_TARGET_PATH_" ] || mkdir -p "$_TARGET_PATH_"
+			else
+				_CURR_=$((_CURR_+1))
+				_SKIP_="0"
+				[ -f "$_TARGET_PATH_" ] && {
+					if [ -f "${_TARGET_PATH_}${BAIDUYUN_DOWNLOAD_EXT}" ]; then
+						cp -f "$_TARGET_PATH_" "$_SROUCE_PATH_"
+						cp -f "${_TARGET_PATH_}${BAIDUYUN_DOWNLOAD_EXT}" "${_SROUCE_PATH_}${BAIDUYUN_DOWNLOAD_EXT}"
+					else
+						_SKIP_="1"
+					fi
+				}
+				echo "[${_CURR_}/${_TOTAL_}] $_SROUCE_PATH_ => $_TARGET_PATH_$([ "${_SKIP_}" = "1" ] && echo " ...Skip")"
+				[ "$_SKIP_" = "1" ] || {
+					${BIN_BAIDUYUN} download "$BAIDUYUN_WORK_DIR/$LINE" --saveto "$(echo "$_SROUCE_PATH_" | grep -Eo '.*\/')" && {
+						cp -f "$_SROUCE_PATH_" "$_TARGET_PATH_"
+					}
+				}
+			fi
+		}
+	done <<-EOF
+	$(cat $BAIDUYUN_CACHE_DIR/baiduyun_process)
+	EOF
+	cat "$BAIDUYUN_CACHE_DIR/baiduyun_list"
 }
 
 dispatch() {
