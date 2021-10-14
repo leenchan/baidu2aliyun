@@ -166,6 +166,7 @@ transfer_files() {
 }
 
 dispatch() {
+	# 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
 	curl \
 		-X POST https://api.github.com/repos/${GITHUB_REPO}/dispatches \
 		-H "Accept: application/vnd.github.everest-preview+json" \
@@ -185,5 +186,8 @@ case "$1" in
 		;;
 	"transfer")
 		transfer_files || exit 1
+		;;
+	"continue")
+		dispatch
 		;;
 esac
