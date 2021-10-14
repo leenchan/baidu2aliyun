@@ -12,10 +12,16 @@ TO_ALIYUN_DIR="${TO_ALIYUN_DIR:-/Baiduyun}"
 echo "$TO_ALIYUN_DIR" | grep -q '^/' || TO_ALIYUN_DIR="/${TO_ALIYUN_DIR}"
 
 pre_check() {
+	[ -z "$FROM_BAIDUYUN_PATH_LAST" ] || {
+		FROM_BAIDUYUN_PATH="${FROM_BAIDUYUN_PATH_LAST}"
+		echo "FROM_BAIDUYUN_PATH=${FROM_BAIDUYUN_PATH_LAST}" >> $GITHUB_ENV
+	}
+	[ -z "$TO_ALIYUN_DIR_LAST" ] || {
+		TO_ALIYUN_DIR_LAST="${TO_ALIYUN_DIR}"
+		echo "TO_ALIYUN_DIR_LAST=${TO_ALIYUN_DIR}" >> $GITHUB_ENV
+	}
 	[ -z "$FROM_BAIDUYUN_PATH" ] && echo "Please choose a file / dir from BaiduYun" && return 1
 	[ -z "$REFRESH_TOKEN" ] && echo "Please set Aliyun Token" && return 1
-	[ -z "$FROM_BAIDUYUN_PATH_LAST" ] || echo "FROM_BAIDUYUN_PATH=${FROM_BAIDUYUN_PATH_LAST}" >> $GITHUB_ENV
-	[ -z "$TO_ALIYUN_DIR_LAST" ] || echo "TO_ALIYUN_DIR_LAST=${TO_ALIYUN_DIR}" >> $GITHUB_ENV
 	return 0
 }
 
