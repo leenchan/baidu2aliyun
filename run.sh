@@ -93,7 +93,9 @@ transfer_files() {
 	echo "To Aliyun: $TO_ALIYUN_DIR"
 	LIST=$(${BIN_BAIDUYUN} ls "$FROM_BAIDUYUN_PATH" | grep -E '^\s*[0-9]+' | sed -E 's/^\s*//;s/\s{3,16}/  /g' | awk -F'  ' '{print $4}')
 	if [ -z "$LIST" ]; then
-		${BIN_BAIDUYUN} meta "$FROM_BAIDUYUN_PATH" | grep -q 'md5' || {
+		_FILE_META_=$(${BIN_BAIDUYUN} meta "$FROM_BAIDUYUN_PATH")
+		echo "$_FILE_META_"
+		echo "$_FILE_META_" | grep -q 'md5' || {
 			echo "[ERR] Not found: \"${FROM_BAIDUYUN_PATH}\""
 			return 1
 		}
