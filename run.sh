@@ -11,6 +11,22 @@ ALIYUN_MNT="$CUR_DIR/aliyun"
 TO_ALIYUN_DIR="${TO_ALIYUN_DIR:-/Baiduyun}"
 echo "$TO_ALIYUN_DIR" | grep -q '^/' || TO_ALIYUN_DIR="/${TO_ALIYUN_DIR}"
 
+webdav_cli() {
+	# Reading Files/Folders on Webdav Server:
+	curl 'https://example.com/webdav'
+	# Deleting Files/Folders on Webdav Server:
+	curl -X DELETE 'https://example.com/webdav/test'
+	curl -X DELETE 'https://example.com/webdav/test.txt'
+	# Renaming File on Webdav Server:
+	curl -X MOVE --header 'Destination:http://example.org/new.txt' 'https://example.com/old.txt'
+	# Creating new foder on Webdav Server:
+	curl -X MKCOL 'https://example.com/new_folder'
+	# Uploading File on Webdav Server:
+	curl -T '/path/to/local/file.txt' 'https://example.com/test/'
+	# Username/Password
+	curl --user 'user:pass' 'https://example.com'
+}
+
 pre_check() {
 	[ -z "$FROM_BAIDUYUN_PATH_LAST" ] || {
 		FROM_BAIDUYUN_PATH="${FROM_BAIDUYUN_PATH_LAST}"
@@ -174,6 +190,7 @@ transfer_files() {
 continue_transfering() {
 	# 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
 	echo "GITHUB_REPO: ${GITHUB_REPO}"
+	curl "https://api.github.com/repos/leenchan/baidu2aliyun/actions/workflows" -H "Authorization: token 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"
 	curl -X POST "https://api.github.com/repos/${GITHUB_REPO}/dispatches" -H "Accept: application/vnd.github.everest-preview+json" -H "Authorization: token ${REPO_TOKEN}" -d "{\"event_type\": \"continue\", \"client_payload\": {\"from_baiduyun\": \"$FROM_BAIDUYUN_PATH\", \"to_aliyun\": \"$TO_ALIYUN_DIR\"}}"
 }
 
