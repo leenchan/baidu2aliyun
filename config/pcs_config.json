@@ -16,7 +16,7 @@
   ],
   "appid": 266719,
   "cache_size": 65536,
-  "max_parallel": 5,
+  "max_parallel": 1,
   "max_upload_parallel": 8,
   "max_download_load": 1,
   "max_upload_load": 4,

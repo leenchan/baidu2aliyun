@@ -153,7 +153,7 @@ transfer_files() {
 				}
 				echo "[${_CURR_}/${_TOTAL_}] $_SROUCE_PATH_ => $_TARGET_PATH_$([ "${_SKIP_}" = "1" ] && echo " ...Skip")"
 				[ "$_SKIP_" = "1" ] || {
-					${BIN_BAIDUYUN} download "$BAIDUYUN_WORK_DIR/$LINE" --saveto "$(echo "$_SROUCE_PATH_" | grep -Eo '.*\/')" && {
+					${BIN_BAIDUYUN} download "$BAIDUYUN_WORK_DIR/$LINE" --mode pcs --saveto "$(echo "$_SROUCE_PATH_" | grep -Eo '.*\/')" && {
 						cp -f "$_SROUCE_PATH_" "$_TARGET_PATH_"
 					}
 				}

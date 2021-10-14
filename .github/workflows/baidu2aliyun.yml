@@ -39,6 +39,6 @@ jobs:
       run: |
         sh run.sh run_cloud
 
-    - name: Transfer files
+    - name: Transfer files ${{ env.FROM_BAIDUYUN_PATH }} => ${{ evn.TO_ALIYUN_DIR }}
       run: |
         sh run.sh transfer
