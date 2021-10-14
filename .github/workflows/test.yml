@@ -28,25 +28,21 @@ jobs:
     - name: Checkout
       uses: actions/checkout@main
 
-    - name: Trigger
+    - name: Precheck
       run: |
-        sh run.sh continue
+        sh run.sh precheck
 
-    # - name: Precheck
-    #   run: |
-    #     sh run.sh precheck
+    - name: Prepare
+      run: |
+        sh run.sh prepare
 
-    # - name: Prepare
-    #   run: |
-    #     sh run.sh prepare
+    - name: Run Baiduyun / Aliyun Service
+      run: |
+        sh run.sh run_cloud
 
-    # - name: Run Baiduyun / Aliyun Service
-    #   run: |
-    #     sh run.sh run_cloud
-
-    # - name: SSH Connection to Actions
-    #   uses: P3TERX/ssh2actions@v1.0.0
+    - name: SSH Connection to Actions
+      uses: P3TERX/ssh2actions@v1.0.0
     
-    # - name: Wait
-    #   run:
-    #     sleep $((3600*12))
+    - name: Wait
+      run:
+        sleep $((3600*12))
