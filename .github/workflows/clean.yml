@@ -1,0 +1,16 @@
+name: Clean Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Delete old Workflow Runs
+      uses: GitRML/delete-workflow-runs@main
+      # if: env.DELETE_OLD_WORKFLOW == 'true' && !cancelled()
+      # with:
+      #   retain_days: 1
+      #   keep_minimum_runs: 3
