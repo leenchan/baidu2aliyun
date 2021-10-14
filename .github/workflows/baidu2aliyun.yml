@@ -2,6 +2,7 @@ name: Baiduyun => Aliyun q(^.^)p
 
 on:
   repository_dispatch:
+    types: [continue]
   workflow_dispatch:
     inputs:
       FROM_BAIDUYUN_PATH:
