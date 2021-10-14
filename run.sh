@@ -167,7 +167,8 @@ transfer_files() {
 
 continue_transfering() {
 	# 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
-	curl -X POST "https://api.github.com/repos/${GITHUB_REPO}/dispatches" -H "Accept: application/vnd.github.everest-preview+json" -H "Authorization: token ${{ secrets.REPO_TOKEN }}" -d "{\"event_type\": \"continue\", \"client_payload\": {\"from_baiduyun\": \"$FROM_BAIDUYUN_PATH\", \"to_aliyun\": \"$TO_ALIYUN_DIR\"}}"
+	echo "GITHUB_REPO: ${GITHUB_REPO}"
+	curl -X POST "https://api.github.com/repos/${GITHUB_REPO}/dispatches" -H "Accept: application/vnd.github.everest-preview+json" -H "Authorization: token ${REPO_TOKEN}" -d "{\"event_type\": \"continue\", \"client_payload\": {\"from_baiduyun\": \"$FROM_BAIDUYUN_PATH\", \"to_aliyun\": \"$TO_ALIYUN_DIR\"}}"
 }
 
 case "$1" in

@@ -18,6 +18,7 @@ env:
   TO_ALIYUN_DIR: ${{ github.event.inputs.TO_ALIYUN_DIR }}
   FROM_BAIDUYUN_PATH_LAST: ${{ github.event.client_payload.from_baiduyun }}
   TO_ALIYUN_DIR_LAST: ${{ github.event.client_payload.to_aliyun }}
+  REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
 
 jobs:
   main:
