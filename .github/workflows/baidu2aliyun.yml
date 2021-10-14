@@ -26,6 +26,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Print GitHub event action
+      run: |
+        echo "${{ github.event.action }}"
+
     - name: Checkout
       uses: actions/checkout@main
 
